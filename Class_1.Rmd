@@ -1,0 +1,333 @@
+---
+title: "Class_1"
+author: "Rubagumya Brave"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+Data structure (Vectors, Factors, Lists, Data frame, matrix and arrays)
+Vector: The foundational R data structure
+Numeric
+```{r}
+x <- c(0.5, 0.6)
+age<-c(20,35,32,29)
+summary(age)
+```
+```{r}
+age<-c(35,24,18,24)
+mean(age)
+```
+Logical
+```{r}
+x <- c(TRUE, FALSE)
+x <- c(T, F)
+x
+```
+Character
+```{r}
+x <- c("a", "b", "c" )
+class<-c("M","F","F","M")
+class
+```
+Integer
+```{r}
+x <- 9:29
+x
+```
+Complex
+```{r}
+x <- c(1+0i, 2+4i)
+```
+
+Matrix and operation within matrices
+
+```{r}
+x<- matrix(1:6, nrow = 2, ncol = 3)
+x
+```
+```{r}
+(y<-matrix(1:6, nrow = 3, ncol = 2))
+```
+
+```{r}
+x%*%y
+```
+List
+```{r}
+x <- list(1, "a", TRUE, 1 + 4i)
+x
+```
+Factor 
+```{r}
+x <- factor(c("yes", "yes", "no", "yes", "no"))
+x
+```
+Create a vector with NAs in it
+```{r}
+x <- c(1, 2, NA, 10, 3)
+x
+```
+Return a logical vector indicating which elements are NA
+```{r}
+is.na(x)
+```
+```{r}
+x <- c(1, 2, 4, "NA", 5)
+bad <- is.na(x) 
+print(bad)
+x[!bad]
+```
+What if there are multiple R objects and you want to take the subset with no missing values in any of those objects?
+```{r}
+x <- c(1, 2, NA, 4, NA, 5)
+y <- c("a", "b", NA, "d", NA, "f")
+good <- complete.cases(x, y) 
+good
+
+```
+Coercion
+If character is present, in a vector, R convert everything in the vector to character strings.
+If a vector only contains logical and numbers, R will convert the logical to numbers, Every true becomes a 1, and every FALSE becomes 0
+```{r}
+sum(c(TRUE,TRUE,FALSE,FALSE,FALSE)) 
+```
+Create data
+Create data Using data frame Data frame is more general than matrix How??? Because data frame can contain different modes of data (Numeric, character and so on) Similar to what you can see in SPSS, SAS,…
+### Let’s create a data frame
+```{r}
+studentID<-c(1,2,3,4,5) 
+math_score<-c(12,17,10,9,NA) 
+gender<-c("M","F","M","M","F")
+it_score<-c(13,18,11,10,19)
+scoredata<-data.frame(studentID,gender,math_score,it_score) 
+scoredata
+
+```
+```{r}
+#View(scoredata)
+```
+Create data from keyboard
+Steps 1. Create data frame (or matrix) with variable names 2. Invoke the text editor in the data objected created at first step
+```{r}
+data_class2<-data.frame(height=numeric(0),weight=numeric(0),bmi=numeric (0))
+data_class2<-edit(data_class2)
+
+```
+
+Data Importation
+R has some features that can allow to import data from different sources ( It can be text file, spreadsheet, or database)
+1.	Data from excel
+2.	Data statistical packages (SAS, SPSS, Stata)
+3.	Data from Text files (ASCII, XML, Webscraping)
+4.	Data from database management systems (SQL,MySQL, Oracle, Access)
+```{r}
+data_class <- read.csv('D:/AUCA/R-Data-Science/height_weight_dataset.csv')
+variable.names(data_class) 
+head(data_class)
+```
+```{r}
+tail(data_class)
+```
+
+```{r}
+data_class[10:20,]
+```
+```{r}
+summary(data_class$Weight_kg)
+```
+
+```{r}
+length(data_class$Weight_kg)
+```
+```{r}
+data_class[,-1]
+```
+```{r}
+data() # list of datasets currently available data("airquality") variable.names(airquality)
+variable.names(airquality)
+```
+
+```{r}
+str(airquality)
+```
+Explorarion data analysis 
+Examine numerica variable using common summary
+```{r}
+data_class
+```
+
+```{r}
+summary(data_class)
+```
+
+
+```{r}
+str(data_class)
+```
+Summary Statistics
+```{r}
+summary(data_class)
+```
+```{r}
+apply(data_class,2,mean)
+```
+
+```{r}
+apply(data_class,2,sd)
+```
+```{r}
+c(mean(data_class$Height_cm),sd(data_class$Height_cm))
+```
+```{r}
+c(mean(data_class$Weight_kg),sd(data_class$Weight_kg))
+```
+```{r}
+c(Mean = mean(data_class$Weight_kg),SD = sd(data_class$Weight_kg))
+```
+
+Variation and covariation using both numerical and graphs
+Relationship between a categorical and a continuous variable
+
+```{r}
+data("iris") 
+head(iris)
+```
+
+```{r}
+mean(iris$Petal.Length)
+```
+```{r}
+mean(iris$Petal.Length[iris$Species=="setosa"])
+```
+
+```{r}
+mean(iris$Petal.Length[iris$Species=="versicolor"])
+```
+```{r}
+mean(iris$Petal.Length[iris$Species=="virginica"])
+```
+shortcut
+```{r}
+by(iris$Petal.Length,iris$Species,mean)
+```
+```{r}
+by(iris$Petal.Length,iris$Species,sd)
+```
+```{r}
+by(iris$Petal.Length,iris$Species,summary)
+```
+Visualize the differences in continuous variables between categories using Box-and- whisker plot.
+
+```{r}
+boxplot(iris$Sepal.Length~iris$Species,data=iris, main="Comparison")
+```
+
+Relationship between two categorical variables.
+```{r}
+ucba<-data.frame(UCBAdmissions)
+head(ucba)
+```
+
+```{r}
+cross<-xtabs(Freq~Gender+Admit,data=ucba)
+(cross<-xtabs(Freq~Gender+Admit,data=ucba))
+```
+Is there gender bias in UCB graduate admission process?
+```{r}
+prop.table(cross,2)
+```
+Simpson’s paradox
+Phenomenon, where a trend that appears in combined groups of data disappears or reverses when broken down into groups.
+
+```{r}
+cross2<-xtabs(Freq~Gender+Admit,data=ucba[ucba$Dept=="A",])
+prop.table(cross2,1)
+
+```
+Bar Chart
+```{r}
+dat <- read.table(text ="ProdA ProdB ProdC ProdD
+1 110 50 60 70
+2 120 50 80 65", header= TRUE)
+
+barplot(as.matrix(dat),beside=FALSE,col=c("Red","green"))
+
+```
+```{r}
+#barplot(as.matrix(dat),beside=TRUE,col=c("gold3","red"))
+dat <- read.table(text = "A B C D E F G
+1 10 80 30 90 70 60 90
+2 20 50 70 50 40 10 40
+3 60 80 80 60 60 30 160
+4 20 40 70 80 20 10 70", header = TRUE)
+barplot(as.matrix(dat))
+```
+
+
+Scatter Plot
+```{r}
+plot(Weight_kg~Height_cm,data=data_class)
+```
+
+```{r}
+plot(data_class$Height_cm,data_class$Weight_kg)
+```
+```{r}
+plot(data_class[,1],data_class[,2])
+```
+```{r}
+cor(data_class$Height_cm,data_class$Weight_kg)
+```
+
+Linear Models
+```{r}
+plot(Weight_kg~Height_cm, data = data_class)
+abline(lm(Weight_kg~Height_cm, data = data_class)$coefficient)
+```
+```{r}
+data_lm<-lm(Weight_kg~Height_cm,data=data_class)
+summary(data_lm)
+```
+```{r}
+hist(data_class$Height_cm)
+```
+```{r}
+hist(data_class$Weight_kg, col = 'blue')
+```
+Linear with other line
+```{r}
+plot(Weight_kg~Height_cm, data = data_class)
+abline(lm(Weight_kg~Height_cm, data = data_class)$ coefficients)
+lines(lowess(data_class$Height_cm,data_class$Weight_kg),col="blue")
+```
+```{r}
+cor(data_class$Height_cm,data_class$Weight_kg)
+```
+```{r}
+model1<- lm(Weight_kg~Height_cm, data = data_class)
+model1
+```
+Data management
+Create another variable
+```{r}
+attach(data_class)
+(BMI<-Weight_kg/(Height_cm/100)^2)
+```
+```{r}
+(BMI <- round(Weight_kg/(Height_cm/100)^2))
+```
+```{r}
+head(cbind(data_class,BMI), n = 5)
+```
+```{r}
+new_data_class<-cbind(data_class,BMI)
+tail(cbind(data_class,BMI),n=10)
+```
+Summary of BMI
+```{r}
+summary(BMI)
+```
+```{r}
+stem(BMI)
+```
+
